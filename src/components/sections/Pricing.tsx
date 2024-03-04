@@ -4,7 +4,6 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,48 +13,24 @@ export default function Pricing() {
   const plans = [
     {
       name: "Basic plan",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      price: 12,
+      desc: "This pricing plan is being worked on as for now",
+      price: "--",
       isMostPop: false,
-      features: [
-        "Curabitur faucibus",
-        "massa ut pretium maximus",
-        "Sed posuere nisi",
-        "Pellentesque eu nibh et neque",
-        "Suspendisse a leo",
-        "Praesent quis venenatis ipsum",
-        "Duis non diam vel tortor",
-      ],
+      features: ["Comming Soon...", "Comming Soon...", "Comming Soon..."],
     },
     {
       name: "Startup",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      price: 35,
-      isMostPop: true,
-      features: [
-        "Curabitur faucibus",
-        "massa ut pretium maximus",
-        "Sed posuere nisi",
-        "Pellentesque eu nibh et neque",
-        "Suspendisse a leo",
-        "Praesent quis venenatis ipsum",
-        "Duis non diam vel tortor",
-      ],
+      desc: "This pricing plan is being worked on as for now",
+      price: "--",
+      isMostPop: false,
+      features: ["Comming Soon...", "Comming Soon...", "Comming Soon..."],
     },
     {
       name: "Enterprise",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      price: 60,
+      desc: "This pricing plan is being worked on as for now",
+      price: "--",
       isMostPop: false,
-      features: [
-        "Curabitur faucibus",
-        "massa ut pretium maximus",
-        "Sed posuere nisi",
-        "Pellentesque eu nibh et neque",
-        "Suspendisse a leo",
-        "Praesent quis venenatis ipsum",
-        "Duis non diam vel tortor",
-      ],
+      features: ["Comming Soon...", "Comming Soon...", "Comming Soon..."],
     },
   ];
   return (
@@ -100,7 +75,9 @@ export default function Pricing() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Get Started</Button>
+              <Button disabled className="w-full">
+                Working On...
+              </Button>
             </CardFooter>
           </Card>
         ))}
