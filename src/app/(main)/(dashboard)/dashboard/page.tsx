@@ -1,7 +1,6 @@
 import ExpenseOverviewCard from "@/components/ExpenseOverviewCard";
 import DataTable from "@/components/table/data-table";
 import { columns } from "@/components/table/column-defination";
-import { payments } from "@/lib/table/tempData";
 import type { Metadata } from "next";
 import { getCategory, getTransaction } from "@/lib/dbFunctions/db";
 import { Suspense } from "react";

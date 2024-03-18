@@ -27,7 +27,7 @@ export default function ExpenseLineChart({
         {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
+        <Tooltip labelClassName="!text-black" />
         <Legend />
         <Line type="monotone" dataKey="income" stroke="#8884d8" />
         <Line type="monotone" dataKey="expense" stroke="#82ca9d" />

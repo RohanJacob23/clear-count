@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,18 +16,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -50,27 +38,12 @@ import {
 import { ScrollArea } from "./ui/scroll-area";
 import AddCardModalContent from "./AddCardModalContent";
 import { Category } from "@/types/type";
-import { addTransaction } from "@/actions/dbActions";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  description: z.string().min(1, "Description is required"),
-  transactionDate: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  category: z.string({
-    required_error: "Please select an category to display.",
-  }),
-  type: z.union([z.literal("expense"), z.literal("income")]),
-  amount: z.coerce
-    .number({
-      required_error: "Please enter the amount",
-      invalid_type_error: "Please enter a number",
-    })
-    .int()
-    .positive()
-    .min(1, "Please enter the amount"),
-});
+import { useFormState } from "react-dom";
+import { addTransactionFormAction } from "@/actions/addTransactionsAction";
+import SubmitButton from "./SubmitButton";
+import { Label } from "./ui/label";
+import { cn } from "@/lib/utils";
 
 export default function AddTransactionModal({
   userId,
@@ -79,31 +52,19 @@ export default function AddTransactionModal({
   userId: string;
   categories: Category[];
 }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      description: "",
-      transactionDate: new Date(),
-      type: "expense",
-    },
-  });
+  const formRef = useRef<HTMLFormElement>(null);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = React.useState<Date>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>();
+  const [state, formAction] = useFormState(addTransactionFormAction, null);
+  const [renderToast, setRenderToast] = useState<string | number>();
 
-  const [open, setOpen] = useState(false);
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    await addTransaction({
-      amount: values.amount,
-      category_id: values.category,
-      user_id: userId,
-      description: values.description,
-      date: values.transactionDate,
-      type: values.type,
-    }).finally(() => toast.success("Transaction Added!!"));
-    form.reset();
-  }
+  useEffect(() => {
+    if (state?.success) {
+      setRenderToast((prev) => toast.success(state.success, { id: prev }));
+    }
+  }, [state]);
 
   return (
     <Dialog>
@@ -121,192 +82,170 @@ export default function AddTransactionModal({
         <DialogHeader>
           <DialogTitle>Add Transaction</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* description input */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <form
+          ref={formRef}
+          action={async (formData) => {
+            setRenderToast(toast.loading("Adding Transaction..."));
+            try {
+              await formAction(formData);
+            } catch (error) {
+              console.log(error);
+            } finally {
+              formRef.current?.reset();
+              setDate(undefined);
+              setSelectedCategoryId(undefined);
+            }
+          }}
+          className="flex flex-col space-y-4"
+        >
+          <input type="hidden" name="userId" value={userId} />
+          <input
+            type="hidden"
+            name="transactionDate"
+            value={date?.toLocaleDateString()}
+          />
+          <input
+            type="hidden"
+            name="category"
+            id="category"
+            value={selectedCategoryId}
+          />
 
-            <div className="flex flex-col md:flex-row gap-4 items-center md:gap-2">
-              {/* date input */}
-              <FormField
-                control={form.control}
-                name="transactionDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col flex-1 self-stretch">
-                    <FormLabel>Transaction Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => date < new Date("1900-01-01")}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          {/* description input */}
+          <div className="grid items-center gap-1.5">
+            <Label htmlFor="description">Description</Label>
+            <Input type="text" name="description" required />
+          </div>
 
-              {/* category input */}
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col flex-1 self-stretch">
-                    <FormLabel>Category</FormLabel>
-                    <Dialog>
-                      <Popover modal={true} open={open} onOpenChange={setOpen}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className={cn(
-                                "justify-between",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value
-                                ? categories.find(
-                                    (category) => category.id === field.value
-                                  )?.name
-                                : "Select category"}
-                              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full sm:max-w-56 p-0">
-                          <Command>
-                            <CommandInput
-                              placeholder="Search category..."
-                              className="h-9"
-                            />
-                            <CommandEmpty>No category found.</CommandEmpty>
-                            <CommandGroup heading="Categories">
-                              <ScrollArea className="h-28">
-                                {categories.map((category) => (
-                                  <CommandItem
-                                    value={category.id}
-                                    key={category.id}
-                                    onSelect={() => {
-                                      form.setValue("category", category.id);
-                                      setOpen(false);
-                                    }}
-                                  >
-                                    {category.name![0].toUpperCase() +
-                                      category.name!.slice(1)}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto h-4 w-4",
-                                        category.id === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </ScrollArea>
-                            </CommandGroup>
-                            <CommandGroup heading="Command">
-                              <CommandItem>
-                                <DialogTrigger className="flex items-center gap-2 w-full">
-                                  <PlusCircledIcon className="size-4" />
-                                  Add Category
-                                </DialogTrigger>
-                              </CommandItem>
-                            </CommandGroup>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-
-                      {/* dialog content */}
-                      <AddCardModalContent userId={userId} />
-                    </Dialog>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* type input */}
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+          <div className="flex flex-col md:flex-row gap-4 items-center md:gap-2">
+            {/* date input */}
+            <Popover modal={true} open={openDate} onOpenChange={setOpenDate}>
+              <div className="grid w-full items-center gap-1.5">
+                <Label>Date</Label>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "pl-3 text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
                   >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="expense">Expense</SelectItem>
-                      <SelectItem value="income">Income</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+              </div>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(date) => {
+                    setDate(date);
+                    setOpenDate(false);
+                  }}
+                  disabled={(date) => date < new Date("1900-01-01")}
+                />
+              </PopoverContent>
+            </Popover>
 
-            {/* amount input */}
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input placeholder="enter amount" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* category input */}
+            <Dialog>
+              <Popover
+                modal={true}
+                open={openCategory}
+                onOpenChange={setOpenCategory}
+              >
+                <div className="grid w-full items-center gap-1.5">
+                  <Label>Category</Label>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "justify-between",
+                        !selectedCategoryId && "text-muted-foreground"
+                      )}
+                    >
+                      {selectedCategoryId
+                        ? categories.find(
+                            (category) => category.id === selectedCategoryId
+                          )?.name
+                        : "Select category"}
+                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                </div>
+                <PopoverContent className="w-full sm:max-w-56 p-0">
+                  <Command>
+                    <CommandInput
+                      placeholder="Search category..."
+                      className="h-9"
+                    />
+                    <CommandEmpty>No category found.</CommandEmpty>
+                    <CommandGroup heading="Categories">
+                      <ScrollArea className="h-28">
+                        {categories.map((category) => (
+                          <CommandItem
+                            value={category.id}
+                            key={category.id}
+                            onSelect={() => {
+                              setSelectedCategoryId(category.id);
+                              setOpenCategory(false);
+                            }}
+                          >
+                            {category.name![0].toUpperCase() +
+                              category.name!.slice(1)}
+                            <CheckIcon
+                              className={cn(
+                                "ml-auto h-4 w-4",
+                                category.id === selectedCategoryId
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </ScrollArea>
+                    </CommandGroup>
+                    <CommandGroup heading="Command">
+                      <CommandItem>
+                        <DialogTrigger className="flex items-center gap-2 w-full">
+                          <PlusCircledIcon className="size-4" />
+                          Add Category
+                        </DialogTrigger>
+                      </CommandItem>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
 
-            <Button className="w-full" type="submit">
-              Add
-            </Button>
-          </form>
-        </Form>
+              {/* dialog content */}
+              <AddCardModalContent userId={userId} />
+            </Dialog>
+          </div>
+
+          {/* income and expense */}
+          <div className="grid items-center gap-1.5">
+            <Label htmlFor="type">Type</Label>
+
+            <Select name="type" defaultValue="expense">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="expense">Expense</SelectItem>
+                <SelectItem value="income">Income</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* amount input */}
+          <div className="grid items-center gap-1.5">
+            <Label htmlFor="amount">Amount</Label>
+            <Input type="text" name="amount" required />
+          </div>
+          <SubmitButton text="Add" />
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -79,7 +79,7 @@ export default function MontlyExpBarChart({
         {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
+        <Tooltip labelClassName="!text-black" />
         {/* <Legend /> */}
         <Bar dataKey="amount" fill="#8884d8" />
       </BarChart>

@@ -98,9 +98,6 @@ dependencies:
   react-dom:
     specifier: ^18
     version: 18.2.0(react@18.2.0)
-  react-hook-form:
-    specifier: ^7.50.1
-    version: 7.50.1(react@18.2.0)
   react-resizable-panels:
     specifier: ^2.0.9
     version: 2.0.9(react-dom@18.2.0)(react@18.2.0)
@@ -119,9 +116,6 @@ dependencies:
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
-  zod:
-    specifier: ^3.22.4
-    version: 3.22.4
 
 devDependencies:
   '@types/node':
@@ -6223,3 +6217,4 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: true
