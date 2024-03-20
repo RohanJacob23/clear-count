@@ -114,7 +114,7 @@ export default function AddTransactionModal({
           {/* description input */}
           <div className="grid items-center gap-1.5">
             <Label htmlFor="description">Description</Label>
-            <Input type="text" name="description" required />
+            <Input type="text" name="description" required autoComplete="off" />
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 items-center md:gap-2">
@@ -242,7 +242,7 @@ export default function AddTransactionModal({
           {/* amount input */}
           <div className="grid items-center gap-1.5">
             <Label htmlFor="amount">Amount</Label>
-            <Input type="text" name="amount" required />
+            <Input type="text" name="amount" required autoComplete="off" />
           </div>
           <SubmitButton text="Add" />
         </form>

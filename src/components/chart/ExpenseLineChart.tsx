@@ -29,8 +29,8 @@ export default function ExpenseLineChart({
         <YAxis />
         <Tooltip labelClassName="!text-black" />
         <Legend />
-        <Line type="monotone" dataKey="income" stroke="#8884d8" />
-        <Line type="monotone" dataKey="expense" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="income" stroke="#FFD700" />
+        <Line type="monotone" dataKey="expense" stroke="#E84855" />
       </LineChart>
     </ResponsiveContainer>
   );

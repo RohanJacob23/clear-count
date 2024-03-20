@@ -46,7 +46,7 @@ export default async function ExpenseOverviewCard({
       </CardHeader>
       <CardContent>
         <h3>
-          $
+          ₹
           {avgExpense
             ? isNaN(parseFloat(avgExpense))
               ? 0

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Payment } from "../../lib/table/tempData";
 import { ColumnDef } from "@tanstack/react-table";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import {
@@ -56,9 +55,9 @@ export const columns: ColumnDef<Transaction>[] = [
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("en-IN", {
         style: "currency",
-        currency: "USD",
+        currency: "INR",
       }).format(amount);
 
       return <div className=" font-medium">{formatted}</div>;
@@ -103,15 +102,17 @@ export const columns: ColumnDef<Transaction>[] = [
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={async () => {
-                  await deleteTransaction(payment.id).finally(() =>
-                    toast.error("Transaction Deleted!!")
-                  );
-                }}
-              >
-                Continue
-              </AlertDialogAction>
+              <Button asChild variant="destructive">
+                <AlertDialogAction
+                  onClick={async () => {
+                    await deleteTransaction(payment.id).finally(() =>
+                      toast.error("Transaction Deleted!!")
+                    );
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

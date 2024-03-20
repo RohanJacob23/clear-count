@@ -109,6 +109,12 @@ export default async function page() {
 
   const pieChartDataWithPercentages = calculatePercentages(pieChartData);
 
+  let balance = 0;
+
+  incomeAndExpense.forEach((item) => {
+    balance += item.income - item.expense;
+  });
+
   return (
     <div className="flex flex-col p-4 max-w-screen-xl mx-auto">
       <h3>Analytics</h3>
@@ -117,8 +123,8 @@ export default async function page() {
         {/* Balance Card */}
         <Card className="rounded-lg md:row-span-2">
           <CardHeader>
-            <CardDescription>Balance</CardDescription>
-            <CardTitle>$1000</CardTitle>
+            <CardDescription>Balance for this month</CardDescription>
+            <CardTitle>₹{balance}</CardTitle>
           </CardHeader>
           <CardContent className="p-6"></CardContent>
         </Card>
@@ -147,8 +153,8 @@ export default async function page() {
         {/* Bar chart */}
         <Card className="rounded-lg md:col-span-2 md:row-span-2 md:row-start-3">
           <CardHeader>
-            <CardDescription>Pie Chart</CardDescription>
-            <CardTitle>Spending by Category</CardTitle>
+            <CardDescription>Bar Chart</CardDescription>
+            <CardTitle>Monthly Expenses</CardTitle>
           </CardHeader>
           <CardContent className="p-6 overflow-x-auto">
             <MontlyExpBarChart monthExpenseData={monthExpense} />
