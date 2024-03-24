@@ -6,7 +6,7 @@ import { Google } from "arctic";
 
 const redirectURI =
   process.env.NODE_ENV === "production"
-    ? "https://clear-count.vercel.app/api/login/google/allback"
+    ? "https://clear-count.vercel.app/api/login/google/callback"
     : "http://localhost:3000/api/login/google/callback";
 
 export const google = new Google(
