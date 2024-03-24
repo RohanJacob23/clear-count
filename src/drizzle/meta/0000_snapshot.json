@@ -1,5 +1,5 @@
 {
-  "id": "a1ae0843-259b-456b-985b-025a62008d5d",
+  "id": "0682c533-8230-4e12-909c-f22bd308d6e1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -197,6 +197,12 @@
         },
         "profile": {
           "name": "profile",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "google_sub": {
+          "name": "google_sub",
           "type": "text",
           "primaryKey": false,
           "notNull": false

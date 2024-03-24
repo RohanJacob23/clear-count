@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"email" text,
 	"hashed_password" text,
 	"profile" text,
+	"google_sub" text,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

@@ -63,6 +63,12 @@ export const login = async (prevState: any, formData: FormData) => {
       error: { message: "Invalid credentials" },
     };
 
+  if (existingUser.google_sub) {
+    return {
+      error: { message: "Invalid credentials" },
+    };
+  }
+
   const validPassword = await new Argon2id().verify(
     existingUser.hashed_password!,
     rawFormData.password!

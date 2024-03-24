@@ -10,6 +10,7 @@ export const user = pgTable("user", {
   email: text("email").unique(),
   hashed_password: text("hashed_password"),
   profile: text("profile"),
+  google_sub: text("google_sub"),
 });
 
 export const category = pgTable("category", {

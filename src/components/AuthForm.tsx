@@ -42,7 +42,7 @@ export default function AuthForm({
   }, [state]);
 
   return (
-    <form action={formAction}>
+    <form action={formAction} className="space-y-4">
       <Card className="max-sm:border-none">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">
@@ -60,15 +60,17 @@ export default function AuthForm({
               <GitHubLogoIcon className="mr-2 h-4 w-4" />
               Github
             </Button>
-            <Button variant="outline" disabled>
-              <Image
-                src="/icons/googleIcon.svg"
-                alt="google icon"
-                width={24}
-                height={24}
-                className="mr-2 h-4 w-4"
-              />
-              Google
+            <Button variant="outline" asChild>
+              <Link href="/api/login/google">
+                <Image
+                  src="/icons/googleIcon.svg"
+                  alt="google icon"
+                  width={24}
+                  height={24}
+                  className="mr-2 h-4 w-4"
+                />
+                Google
+              </Link>
             </Button>
           </div>
           <div className="relative">
@@ -113,24 +115,25 @@ export default function AuthForm({
               type="password"
             />
           </div>
-          <p className="!m-0 text-sm text-muted-foreground">
+          <p className="!m-0 !mt-4 text-sm text-muted-foreground">
             {type === "login" ? (
-              <>
+              <span>
                 Don&apos;t have an account?{" "}
                 <Link className="border-b border-primary" href="/signup">
                   Sign Up
                 </Link>{" "}
-              </>
+              </span>
             ) : (
-              <>
+              <span>
                 Already have an account?{" "}
                 <Link className="border-b border-primary" href="/login">
                   Login
                 </Link>
-              </>
+              </span>
             )}
           </p>
         </CardContent>
+
         <CardFooter>
           <SubmitButton text={type === "login" ? "Login" : "Sign Up"} />
         </CardFooter>
