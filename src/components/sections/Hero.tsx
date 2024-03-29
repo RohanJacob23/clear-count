@@ -2,11 +2,12 @@ import Reveal from "../animations/home/Reveal";
 import RevealButton from "../animations/home/RevealButton";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { SparklesCore } from "../ui/Sparkles";
 
 export default function Hero() {
   return (
     <section className="min-h-screen flex flex-col justify-center">
-      <div className="text-center space-y-4 max-w-3xl">
+      <div className="text-center space-y-4 max-w-3xl relative z-50">
         <Reveal>
           <h6 className="lead">Take control of your finances</h6>
         </Reveal>
@@ -27,14 +28,26 @@ export default function Hero() {
           </p>
         </Reveal>
       </div>
-      <RevealButton>
-        <Button asChild className="w-full">
-          <Link href="/dashboard">Get started</Link>
-        </Button>
-        <Button asChild variant="outline" className="w-full">
-          <Link href="/login">Login</Link>
-        </Button>
-      </RevealButton>
+      <div className="relative z-50">
+        <RevealButton>
+          <Button asChild className="w-full">
+            <Link href="/dashboard">Get started</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/login">Login</Link>
+          </Button>
+        </RevealButton>
+      </div>
+      <div className="absolute inset-0">
+        <SparklesCore
+          id="tsparticlesfullpage"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={100}
+          className="w-full h-full"
+        />
+      </div>
     </section>
   );
 }

@@ -3,6 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import FeatureCard from "@/components/FeatureCard";
+import { cn } from "@/lib/utils";
 
 export default function FeatureGridReveal({
   features,
@@ -15,9 +17,9 @@ export default function FeatureGridReveal({
   }[];
 }) {
   return (
-    <div className="relative mt-12 max-w-md md:max-w-none mx-auto">
+    <div className="relative mt-12 max-w-md md:max-w-none mx-auto overflow-hidden">
       <motion.ul
-        className="grid gap-6 grid-cols-1 md:grid-cols-3 md:grid-rows-4"
+        className="grid gap-6 grid-cols-1 md:grid-cols-3 md:grid-rows-4 overflow-hidden"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -44,15 +46,9 @@ export default function FeatureGridReveal({
             whileInView="visible"
             transition={{ duration: 0.5 }}
             key={idx}
-            className={item.gridStyling}
+            className={cn(item.gridStyling, "overflow-hidden")}
           >
-            <Card className="size-full rounded-lg">
-              <CardContent className="p-6 space-y-3">
-                {item.icon}
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
-              </CardContent>
-            </Card>
+            <FeatureCard {...item} />
           </motion.li>
         ))}
       </motion.ul>
