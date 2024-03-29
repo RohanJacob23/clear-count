@@ -1,4 +1,4 @@
-import { validateRequest } from "@/actions/authActions";
+import { validateRequestFn } from "@/actions/authActions";
 import Nav from "@/components/sections/Nav";
 import SideNav from "@/components/sections/SideNav";
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -15,7 +15,7 @@ export default async function DashboardLayout({
 
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
 
-  const { user, session } = await validateRequest();
+  const { user, session } = await validateRequestFn();
 
   if (!user) return redirect("/login");
 

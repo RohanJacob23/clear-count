@@ -4,10 +4,10 @@ import { db } from "@/db";
 import { transaction } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 
-export const addTransactionFormAction = async (
+export async function addTransactionFormAction(
   prevState: any,
   formData: FormData
-) => {
+) {
   const rawFormData = {
     user_id: formData.get("userId") as string,
     description: formData.get("description") as string,
@@ -32,4 +32,4 @@ export const addTransactionFormAction = async (
   } catch (error) {
     console.log(error);
   }
-};
+}

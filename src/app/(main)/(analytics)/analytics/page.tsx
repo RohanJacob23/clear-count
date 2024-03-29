@@ -1,4 +1,4 @@
-import { validateRequest } from "@/actions/authActions";
+import { validateRequestFn } from "@/actions/authActions";
 import CategoryPieChart from "@/components/chart/CategoryPieChart";
 import ExpenseLineChart from "@/components/chart/ExpenseLineChart";
 import MontlyExpBarChart from "@/components/chart/MontlyExpBarChart";
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  const { user } = await validateRequest();
+  const { user } = await validateRequestFn();
 
   if (!user) return null;
 

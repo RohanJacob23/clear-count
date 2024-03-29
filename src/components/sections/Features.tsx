@@ -6,9 +6,9 @@ import {
   MagnifyingGlassIcon,
   PieChartIcon,
   PlusCircledIcon,
-  StarFilledIcon,
 } from "@radix-ui/react-icons";
-import { Card, CardContent } from "../ui/card";
+import Reveal from "../animations/home/Reveal";
+import FeatureGridReveal from "../animations/home/FeatureGridReveal";
 
 export default function Features() {
   const features = [
@@ -54,35 +54,25 @@ export default function Features() {
       <div className="max-w-screen-xl mx-auto md:px-8">
         <div className="relative max-w-2xl mx-auto sm:text-center">
           <div className="relative z-10">
-            <h1 className="">Let&apos;s help power your SaaS</h1>
-            <p className="mt-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              congue, nisl eget molestie varius, enim ex faucibus purus.
-            </p>
+            <Reveal>
+              <h1 className="">Let&apos;s help power your SaaS</h1>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <p className="mt-3">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                congue, nisl eget molestie varius, enim ex faucibus purus.
+              </p>
+            </Reveal>
           </div>
           <div
             className="absolute inset-0 max-w-xs mx-auto h-44 blur-[118px]"
             style={{
-              background:
-                "linear-gradient(152.92deg, rgba(192, 132, 252, 0.2) 4.54%, rgba(232, 121, 249, 0.26) 34.2%, rgba(192, 132, 252, 0.1) 77.55%)",
+              background: "#ffd90040",
             }}
           ></div>
         </div>
-        <div className="relative mt-12 max-w-md md:max-w-none mx-auto">
-          <ul className="grid gap-6 grid-cols-1 md:grid-cols-3 md:grid-rows-4">
-            {features.map((item, idx) => (
-              <li key={idx} className={item.gridStyling}>
-                <Card className="size-full rounded-lg">
-                  <CardContent className="p-6 space-y-3">
-                    {item.icon}
-                    <h4>{item.title}</h4>
-                    <p>{item.desc}</p>
-                  </CardContent>
-                </Card>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <FeatureGridReveal features={features} />
       </div>
     </section>
   );

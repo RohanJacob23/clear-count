@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import LogOutButton from "../LogOutButton";
-import { validateRequest } from "@/actions/authActions";
+import { validateRequestFn } from "@/actions/authActions";
 
 export default async function Nav() {
-  const { user } = await validateRequest();
+  const { user } = await validateRequestFn();
   if (!user) return null;
   return (
     <div className="sticky top-0 flex justify-end items-center py-2 px-4 bg-background/60 backdrop-blur z-40">

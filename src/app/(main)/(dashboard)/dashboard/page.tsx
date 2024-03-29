@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { getCategory, getTransaction } from "@/lib/dbFunctions/db";
 import { Suspense } from "react";
 import ExpOverviewCardLoading from "@/components/loading/ExpOverviewCardLoading";
-import { validateRequest } from "@/actions/authActions";
+import { validateRequestFn } from "@/actions/authActions";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  const { user } = await validateRequest();
+  const { user } = await validateRequestFn();
 
   if (!user) return null;
 

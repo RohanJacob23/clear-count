@@ -10,7 +10,11 @@ import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
 import { cache } from "react";
 
-export const validateRequest = cache(
+export async function validateRequestFn() {
+  return await validateRequestCache();
+}
+
+const validateRequestCache = cache(
   async (): Promise<
     { user: User; session: Session } | { user: null; session: null }
   > => {
@@ -47,7 +51,7 @@ export const validateRequest = cache(
   }
 );
 
-export const login = async (prevState: any, formData: FormData) => {
+export async function login(prevState: any, formData: FormData) {
   const rawFormData = {
     email: formData.get("email") as string | null,
     password: formData.get("password") as string | null,
@@ -87,9 +91,9 @@ export const login = async (prevState: any, formData: FormData) => {
     sessionCookie.attributes
   );
   return redirect("/dashboard");
-};
+}
 
-export const signUp = async (prevState: any, formData: FormData) => {
+export async function signUp(prevState: any, formData: FormData) {
   const rawFormData = {
     name: formData.get("name") as string | null,
     email: formData.get("email") as string | null,
@@ -123,10 +127,10 @@ export const signUp = async (prevState: any, formData: FormData) => {
     sessionCookie.attributes
   );
   return redirect("/dashboard");
-};
+}
 
-export const logout = async () => {
-  const { session } = await validateRequest();
+export async function logout() {
+  const { session } = await validateRequestCache();
   if (!session) {
     return {
       error: "Unauthorized",
@@ -142,4 +146,4 @@ export const logout = async () => {
     sessionCookie.attributes
   );
   return redirect("/login");
-};
+}
