@@ -36,6 +36,9 @@ export default function FeatureGridReveal({
         }}
       >
         {features.map((item, idx) => (
+          <FeatureCard key={idx} index={idx} {...item} />
+        ))}
+        {/* {features.map((item, idx) => (
           <motion.li
             variants={{
               hidden: { opacity: 0, y: 20 },
@@ -50,7 +53,7 @@ export default function FeatureGridReveal({
           >
             <FeatureCard {...item} />
           </motion.li>
-        ))}
+        ))} */}
       </motion.ul>
     </div>
   );
