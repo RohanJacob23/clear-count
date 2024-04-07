@@ -17,7 +17,8 @@ export default function Hero() {
               Effortless expense tracking for a clear financial future with
             </h1>
             <TypewriterEffect
-              cursorClassName="bg-primary"
+              className="text-3xl lg:text-5xl"
+              cursorClassName="bg-primary h-6"
               delay={1}
               words={[{ text: "Clear" }, { text: "Count" }]}
             />
