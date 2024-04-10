@@ -11,7 +11,7 @@ import { Argon2id } from "oslo/password";
 import { cache } from "react";
 
 export async function validateRequestFn() {
-  return await validateRequestCache();
+  return validateRequestCache();
 }
 
 const validateRequestCache = cache(

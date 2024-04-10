@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { CheckIcon } from "@radix-ui/react-icons";
 import {
@@ -36,7 +35,7 @@ export default function Pricing() {
     },
   ];
   return (
-    <section className="max-w-screen-xl mx-auto md:px-8 py-14">
+    <section className="relative z-50 max-w-screen-xl mx-auto md:px-8 py-14">
       <div className="relative max-w-xl mx-auto sm:text-center">
         <Reveal>
           <h1>Pricing for all sizes</h1>

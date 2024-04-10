@@ -6,44 +6,39 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section>
-      <div className="min-h-screen flex flex-col justify-center">
-        <div className="text-center space-y-4 max-w-3xl relative z-50">
-          <Reveal>
-            <h6 className="lead">Take control of your finances</h6>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <h1 className="max-w-3xl mx-auto">
-              Effortless expense tracking for a clear financial future with
-            </h1>
-            <TypewriterEffect
-              className="text-3xl lg:text-5xl"
-              cursorClassName="bg-primary h-6"
-              delay={1}
-              words={[{ text: "Clear" }, { text: "Count" }]}
-            />
-          </Reveal>
+    <section className="min-h-screen flex flex-col justify-center">
+      <div className="text-center space-y-4 max-w-3xl relative z-50">
+        <Reveal>
+          <h6 className="lead">Take control of your finances</h6>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <h1 className="max-w-3xl mx-auto">
+            Effortless expense tracking for a clear financial future with
+          </h1>
+          <TypewriterEffect
+            className="text-3xl lg:text-5xl"
+            cursorClassName="bg-primary h-6"
+            delay={1}
+            words={[{ text: "Clear" }, { text: "Count" }]}
+          />
+        </Reveal>
 
-          <Reveal delay={0.4}>
-            <p className="text-muted-foreground">
-              Track your expenses effortlessly, create budgets, and reach your
-              financial goals with ease.
-            </p>
-          </Reveal>
-        </div>
-        <div className="relative z-50">
-          <RevealButton>
-            <Button asChild className="w-full">
-              <Link href="/dashboard">Get started</Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/login">Login</Link>
-            </Button>
-          </RevealButton>
-        </div>
+        <Reveal delay={0.4}>
+          <p className="text-muted-foreground">
+            Track your expenses effortlessly, create budgets, and reach your
+            financial goals with ease.
+          </p>
+        </Reveal>
       </div>
-      <div className="absolute size-full inset-0 dark:bg-dot-white/[0.2] bg-dot-black/[0.2]">
-        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_50%,black)]"></div>
+      <div className="relative z-50">
+        <RevealButton>
+          <Button asChild className="w-full">
+            <Link href="/dashboard">Get started</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/login">Login</Link>
+          </Button>
+        </RevealButton>
       </div>
     </section>
   );

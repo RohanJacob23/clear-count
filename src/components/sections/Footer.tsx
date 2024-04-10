@@ -21,7 +21,7 @@ export default function Footer() {
     },
   ];
   return (
-    <footer className="pt-10 border-t self-stretch">
+    <footer className="relative z-50 pt-10 border-t self-stretch">
       <div className="flex flex-col items-center gap-4">
         <p className="text-center">
           Nulla auctor metus vitae lectus iaculis, vel euismod massa efficitur.

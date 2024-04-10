@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import {
   BarChartIcon,
   GlobeIcon,
@@ -50,7 +49,7 @@ export default function Features() {
     },
   ];
   return (
-    <section className="py-14 min-h-screen">
+    <section className="relative z-50 py-14 min-h-screen">
       <div className="max-w-screen-xl mx-auto md:px-8">
         <div className="relative max-w-2xl mx-auto sm:text-center">
           <div className="relative z-10">

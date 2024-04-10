@@ -6,6 +6,8 @@ import { getCategory, getTransaction } from "@/lib/dbFunctions/db";
 import { Suspense } from "react";
 import ExpOverviewCardLoading from "@/components/loading/ExpOverviewCardLoading";
 import { validateRequestFn } from "@/actions/authActions";
+import { Dialog } from "@/components/ui/dialog";
+import EditTransactionModal from "@/components/EditTransactionModal";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -56,6 +58,7 @@ export default async function page() {
           data={transactions}
         />
       </div>
+      <EditTransactionModal userId={user.id} />
     </>
   );
 }

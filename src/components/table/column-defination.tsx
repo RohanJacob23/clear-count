@@ -25,6 +25,7 @@ import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { Transaction } from "@/types/type";
 import { deleteTransaction } from "@/actions/dbActions";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -72,8 +73,7 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
-
+      const transaction = row.original;
       return (
         <AlertDialog>
           <DropdownMenu>
@@ -84,7 +84,11 @@ export const columns: ColumnDef<Transaction>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link replace href={`/dashboard?id=${transaction.id}`}>
+                  Edit
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem>Delete</DropdownMenuItem>
@@ -105,7 +109,7 @@ export const columns: ColumnDef<Transaction>[] = [
               <Button asChild variant="destructive">
                 <AlertDialogAction
                   onClick={async () => {
-                    await deleteTransaction(payment.id).finally(() =>
+                    await deleteTransaction(transaction.id).finally(() =>
                       toast.error("Transaction Deleted!!")
                     );
                   }}
