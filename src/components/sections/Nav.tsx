@@ -10,12 +10,18 @@ import {
 import { Button } from "../ui/button";
 import LogOutButton from "../LogOutButton";
 import { validateRequestFn } from "@/actions/authActions";
+import SheetLinks from "../SheetLinks";
 
 export default async function Nav() {
   const { user } = await validateRequestFn();
   if (!user) return null;
+
   return (
-    <div className="sticky top-0 flex justify-end items-center py-2 px-4 bg-background/60 backdrop-blur z-40">
+    <div className="sticky top-0 flex justify-between md:justify-end items-center py-2 px-4 bg-background/60 backdrop-blur z-40">
+      {/* mobile sheet */}
+      <SheetLinks />
+
+      {/* user profile */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative size-10 rounded-full">

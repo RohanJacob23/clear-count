@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { ResizableHandle, ResizablePanel } from "../ui/resizable";
 import { Separator } from "../ui/separator";
 import {
   Tooltip,
@@ -9,23 +8,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
-import { BarChartIcon, DashboardIcon, HomeIcon } from "@radix-ui/react-icons";
+import { Button, buttonVariants } from "../ui/button";
+import {
+  ArrowRightIcon,
+  BarChartIcon,
+  DashboardIcon,
+  HomeIcon,
+} from "@radix-ui/react-icons";
 import ToogleTheme from "../ToogleTheme";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-export default function SideNav({
-  defaultCollapsed,
-}: {
-  defaultCollapsed?: boolean;
-}) {
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const isSmallDevice =
-    typeof matchMedia !== "undefined"
-      ? matchMedia("(max-width : 768px)").matches
-      : false;
-  const pathname = usePathname();
+import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
+export default function SideNav() {
+  const pathname = usePathname();
+  const [openSideNav, setOpenSideNav] = useState(false);
   const sideNavButton = [
     {
       name: "Home",
@@ -44,67 +42,88 @@ export default function SideNav({
     },
   ];
 
-  const handleCollapse = (value: boolean) => {
-    document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-      value
-    )}`;
-    setIsCollapsed(value);
-  };
-
   return (
     <>
-      <ResizablePanel
-        collapsible
-        collapsedSize={4}
-        minSize={8}
-        defaultSize={isSmallDevice || isCollapsed ? 4 : 20}
-        maxSize={20}
-        onCollapse={() => handleCollapse(true)}
-        onExpand={() => handleCollapse(false)}
-        className="min-w-14 max-h-screen"
+      <motion.div
+        initial={{ width: "3.5rem" }}
+        animate={openSideNav ? { width: "15rem" } : { width: "3.5rem" }}
+        className="hidden md:flex flex-col border-r overflow-hidden"
       >
-        <div className="flex flex-col h-full">
-          <TooltipProvider delayDuration={100}>
-            <div className="flex flex-col gap-1 p-2">
-              {sideNavButton.map(({ icon, name, url }, i) => (
-                <React.Fragment key={i}>
-                  {isCollapsed ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant={url === pathname ? "default" : "ghost"}
-                          size="icon"
-                          asChild
-                          className="self-center"
-                        >
-                          <Link href={url}>{icon}</Link>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="left">{name}</TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <Button
-                      asChild
-                      variant={url === pathname ? "default" : "ghost"}
-                      className="justify-start space-x-2"
+        <TooltipProvider delayDuration={100}>
+          <div className="p-2 self-end">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full"
+              onClick={() => setOpenSideNav((prev) => !prev)}
+            >
+              <motion.span
+                initial={false}
+                animate={openSideNav ? { rotate: 180 } : { rotate: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ArrowRightIcon className="size-4 min-w-4" />
+              </motion.span>
+            </Button>
+          </div>
+
+          <Separator />
+          <div className="flex flex-col gap-1 p-2">
+            {sideNavButton.map(({ icon, name, url }, i) => (
+              <Tooltip key={i}>
+                <TooltipTrigger asChild>
+                  <Link href={url}>
+                    <motion.div
+                      layout
+                      className={cn(
+                        buttonVariants({
+                          variant: url === pathname ? "default" : "ghost",
+                        }),
+                        openSideNav ? "justify-start" : "justify-center",
+                        "w-full space-x-2 overflow-x-hidden"
+                      )}
                     >
-                      <Link href={url}>
+                      <motion.span
+                        layout
+                        transition={{
+                          layout: { duration: 0.25 },
+                        }}
+                      >
                         {icon}
-                        <span>{name}</span>
-                      </Link>
-                    </Button>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-            <Separator />
-            <div className="flex flex-col justify-end flex-1 px-2 py-4">
-              <ToogleTheme isCollapsed={isCollapsed} />
-            </div>
-          </TooltipProvider>
-        </div>
-      </ResizablePanel>
-      <ResizableHandle withHandle disabled={isSmallDevice} />
+                      </motion.span>
+                      <AnimatePresence>
+                        {openSideNav && (
+                          <motion.span
+                            layout
+                            key={name}
+                            animate={{ width: "fit-content" }}
+                            exit={{ width: "0px" }}
+                            transition={{
+                              duration: 0.2,
+                            }}
+                            className="inline-block ml-2 w-0 overflow-hidden"
+                          >
+                            {name}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  </Link>
+                  {/* </Button> */}
+                </TooltipTrigger>
+                {!openSideNav && (
+                  <TooltipContent side="left">{name}</TooltipContent>
+                )}
+              </Tooltip>
+            ))}
+          </div>
+
+          <Separator />
+          <div className="flex flex-col justify-end flex-1 px-2 py-4">
+            <ToogleTheme isCollapsed />
+          </div>
+        </TooltipProvider>
+      </motion.div>
     </>
   );
 }

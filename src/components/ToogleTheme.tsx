@@ -16,7 +16,7 @@ export default function ToogleTheme({
     <Button
       variant="outline"
       size={isCollapsed ? "icon" : "default"}
-      className="gap-2"
+      className="gap-2 w-full"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
       <span className={cn(isCollapsed && "sr-only", "dark:hidden")}>Light</span>
