@@ -95,4 +95,7 @@
   body {
     @apply bg-background text-foreground min-h-screen;
   }
+  main {
+    @apply font-poppins;
+  }
 }

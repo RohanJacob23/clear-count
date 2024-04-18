@@ -83,6 +83,9 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         shine: "shine 8s ease-in-out infinite",
       },
+      fontFamily: {
+        poppins: "var(--font-poppins)",
+      },
     },
   },
   plugins: [
