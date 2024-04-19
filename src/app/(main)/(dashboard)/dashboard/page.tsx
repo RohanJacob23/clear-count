@@ -1,13 +1,9 @@
 import ExpenseOverviewCard from "@/components/ExpenseOverviewCard";
-import DataTable from "@/components/table/data-table";
-import { columns } from "@/components/table/column-defination";
 import type { Metadata } from "next";
-import { getCategory, getTransaction } from "@/lib/dbFunctions/db";
 import { Suspense } from "react";
 import ExpOverviewCardLoading from "@/components/loading/ExpOverviewCardLoading";
-import { validateRequestFn } from "@/actions/authActions";
-import { Dialog } from "@/components/ui/dialog";
-import EditTransactionModal from "@/components/EditTransactionModal";
+import TransactionTable from "@/components/sections/TransactionTable";
+import TransactionTableLoading from "@/components/loading/TransactionTableLoading";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -15,50 +11,27 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  const { user } = await validateRequestFn();
-
-  if (!user) return null;
-
-  const categories = await getCategory(user.id);
-  const result = await getTransaction(user.id);
-  const transactions = result.map((item) => ({
-    ...item.transaction,
-    category: item.category.name,
-  }));
-  transactions.reverse();
   return (
     <>
       {/* expenses */}
       <div className="flex flex-wrap gap-4 p-4 max-w-screen-xl mx-auto">
         <Suspense fallback={<ExpOverviewCardLoading />}>
-          <ExpenseOverviewCard title="Total Expenses" userId={user.id} />
+          <ExpenseOverviewCard title="Total Expenses" />
         </Suspense>
         <Suspense fallback={<ExpOverviewCardLoading />}>
-          <ExpenseOverviewCard
-            title="This month expenses"
-            currentDate
-            userId={user.id}
-          />
+          <ExpenseOverviewCard title="This month expenses" currentDate />
         </Suspense>
         <Suspense fallback={<ExpOverviewCardLoading />}>
-          <ExpenseOverviewCard
-            title="Average expenses per month"
-            avg
-            userId={user.id}
-          />
+          <ExpenseOverviewCard title="Average expenses per month" avg />
         </Suspense>
       </div>
 
       {/* table */}
       <div className="flex p-4 max-w-screen-xl mx-auto">
-        <DataTable
-          categories={categories}
-          userId={user.id}
-          columns={columns}
-          data={transactions}
-        />
+        <Suspense fallback={<TransactionTableLoading />}>
+          <TransactionTable />
+        </Suspense>
       </div>
-      <EditTransactionModal userId={user.id} />
     </>
   );
 }

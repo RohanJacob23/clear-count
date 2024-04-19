@@ -61,3 +61,16 @@ export const getCategory = cache(async (userId: string) => {
     .where(eq(category.user_id, userId));
   return result;
 });
+
+export const getUserTransaction = async (
+  userId: string,
+  transactionId: string
+) => {
+  const result = await db
+    .select()
+    .from(transaction)
+    .where(
+      and(eq(transaction.user_id, userId), eq(transaction.id, transactionId))
+    );
+  return result;
+};

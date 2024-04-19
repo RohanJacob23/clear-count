@@ -85,9 +85,7 @@ export const columns: ColumnDef<Transaction>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link replace href={`/dashboard?id=${transaction.id}`}>
-                  Edit
-                </Link>
+                <Link href={`/dashboard/search/${transaction.id}`}>Edit</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AlertDialogTrigger asChild>

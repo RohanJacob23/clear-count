@@ -10,11 +10,7 @@ import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
 import { cache } from "react";
 
-export async function validateRequestFn() {
-  return validateRequestCache();
-}
-
-const validateRequestCache = cache(
+export const validateRequest = cache(
   async (): Promise<
     { user: User; session: Session } | { user: null; session: null }
   > => {
@@ -130,7 +126,7 @@ export async function signUp(prevState: any, formData: FormData) {
 }
 
 export async function logout() {
-  const { session } = await validateRequestCache();
+  const { session } = await validateRequest();
   if (!session) {
     return {
       error: "Unauthorized",

@@ -1,24 +1,25 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAvgExpenses, getTotalExpenses } from "@/lib/dbFunctions/db";
+import { validateRequest } from "@/actions/authActions";
 
 export default async function ExpenseOverviewCard({
   title,
-  userId,
   avg = false,
   currentDate = false,
 }: {
   title: string;
-  userId: string;
   currentDate?: boolean;
   avg?: boolean;
 }) {
+  const { user } = await validateRequest();
+
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
   const totalExpense = currentDate
-    ? await getTotalExpenses(userId, firstDayOfMonth)
-    : await getTotalExpenses(userId);
+    ? await getTotalExpenses(user!.id, firstDayOfMonth)
+    : await getTotalExpenses(user!.id);
 
   const totalAmount = totalExpense.reduce((acc, expense) => {
     if (expense.amount !== null) {
@@ -31,7 +32,7 @@ export default async function ExpenseOverviewCard({
   let avgExpense = "";
   if (avg) {
     const averageExpenseResponse = await getAvgExpenses(
-      userId,
+      user!.id,
       firstDayOfMonth
     );
     avgExpense =

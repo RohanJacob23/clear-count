@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import LogOutButton from "../LogOutButton";
-import { validateRequestFn } from "@/actions/authActions";
+import { validateRequest } from "@/actions/authActions";
 import SheetLinks from "../SheetLinks";
 
 export default async function Nav() {
-  const { user } = await validateRequestFn();
+  const { user } = await validateRequest();
   if (!user) return null;
 
   return (

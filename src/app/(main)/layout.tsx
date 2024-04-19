@@ -1,4 +1,4 @@
-import { validateRequestFn } from "@/actions/authActions";
+import { validateRequest } from "@/actions/authActions";
 import Nav from "@/components/sections/Nav";
 import SideNav from "@/components/sections/SideNav";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,7 +9,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, session } = await validateRequestFn();
+  const { user } = await validateRequest();
 
   if (!user) return redirect("/login");
 
