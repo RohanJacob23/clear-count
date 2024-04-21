@@ -38,22 +38,6 @@ export default function FeatureGridReveal({
         {features.map((item, idx) => (
           <FeatureCard key={idx} index={idx} {...item} />
         ))}
-        {/* {features.map((item, idx) => (
-          <motion.li
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            viewport={{ once: true }}
-            initial="hidden"
-            whileInView="visible"
-            transition={{ duration: 0.5 }}
-            key={idx}
-            className={cn(item.gridStyling, "overflow-hidden")}
-          >
-            <FeatureCard {...item} />
-          </motion.li>
-        ))} */}
       </motion.ul>
     </div>
   );

@@ -77,7 +77,10 @@ export default function SideNav() {
                       layout
                       className={cn(
                         buttonVariants({
-                          variant: url === pathname ? "default" : "ghost",
+                          variant:
+                            name !== "Home" && pathname.startsWith(url)
+                              ? "default"
+                              : "ghost",
                         }),
                         openSideNav ? "justify-start" : "justify-center",
                         "w-full space-x-2 overflow-x-hidden"
