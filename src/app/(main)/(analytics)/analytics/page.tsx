@@ -38,8 +38,6 @@ export default async function page() {
 
   const expensesByCategory = await getExpensesByCategory(user.id);
 
-  console.log(expensesByCategory);
-
   const monthOrder = [
     "Jan",
     "Feb",
@@ -83,8 +81,6 @@ export default async function page() {
     0
   );
 
-  console.log("total amount: ", totalAmount);
-
   const percentages = expensesByCategory.map((item) => ({
     name: item.category!,
     amount: parseInt(item.amount!),
@@ -92,8 +88,6 @@ export default async function page() {
       ((parseInt(item.amount!) / totalAmount) * 100).toFixed(2)
     ),
   }));
-
-  console.log(percentages);
 
   return (
     <>
