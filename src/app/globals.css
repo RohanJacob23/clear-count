@@ -94,6 +94,9 @@
   .lead {
     @apply text-base md:text-xl text-muted-foreground;
   }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground min-h-screen;
   }

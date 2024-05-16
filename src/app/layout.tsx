@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Exo_2 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const poppins = Poppins({
-  weight: ["400"],
+const exo = Exo_2({
+  weight: ["500"],
   subsets: ["latin"],
-  variable: "--font-poppins",
+  variable: "--font-exo",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable}`}>
+      <body className={`${exo.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Toaster position="top-center" richColors closeButton />
           {children}

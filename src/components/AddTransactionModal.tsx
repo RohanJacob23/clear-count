@@ -11,6 +11,7 @@ import {
   CalendarIcon,
   CheckIcon,
   CaretSortIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -83,13 +84,9 @@ export default function AddTransactionModal({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            className="border border-primary hover:border-border border-dashed bg-background shadow-sm hover:bg-accent hover:text-accent-foreground text-foreground"
-            variant="expandIcon"
-            iconPlacement="right"
-            Icon={PlusCircledIcon}
-          >
+          <Button variant="outline" className="border-primary">
             Add Transaction
+            <PlusIcon className="ml-2 size-4" />
           </Button>
         </DialogTrigger>
         <DialogContent className="content-start max-sm:h-full">
@@ -272,13 +269,9 @@ export default function AddTransactionModal({
     return (
       <Drawer shouldScaleBackground open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <Button
-            className="border border-primary hover:border-border border-dashed bg-background shadow-sm hover:bg-accent hover:text-accent-foreground text-foreground"
-            variant="expandIcon"
-            iconPlacement="right"
-            Icon={PlusCircledIcon}
-          >
+          <Button variant="outline" className="grow border-primary">
             Add Transaction
+            <PlusIcon className="ml-2 size-4" />
           </Button>
         </DrawerTrigger>
         <DrawerContent className="max-h-[75%]">

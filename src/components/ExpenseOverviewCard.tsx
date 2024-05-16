@@ -64,7 +64,7 @@ export default async function ExpenseOverviewCard({
    * the selected period.
    */
   const showValue = showAvg
-    ? parseFloat(avgExpensesResult.result!) // parse the result as a float
+    ? parseFloat(avgExpensesResult.result!).toFixed(2) // parse the result as a float upto 2 decimal points
     : showThisMonth
     ? thisMonthExpensesResult.result // get the result from the current month
     : totalExpensesResult.result; // get the result from the year

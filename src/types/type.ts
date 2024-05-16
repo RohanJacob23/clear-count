@@ -15,6 +15,10 @@ export interface Category {
   user_id: string;
 }
 
+export interface Type {
+  name: string;
+}
+
 export interface Data {
   name: string;
   amount: number;

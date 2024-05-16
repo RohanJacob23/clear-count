@@ -45,6 +45,9 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "category",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),
@@ -66,6 +69,9 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "type",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Type" />
     ),

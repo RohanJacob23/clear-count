@@ -84,7 +84,7 @@ const config = {
         shine: "shine 8s ease-in-out infinite",
       },
       fontFamily: {
-        poppins: "var(--font-poppins)",
+        poppins: "var(--font-exo)",
       },
     },
   },

@@ -45,7 +45,7 @@ export default function SheetLinks() {
 
       {/* sheet content */}
       <SheetContent side="left">
-        <div className="flex flex-col mt-6 space-y-4 text-lg font-medium">
+        <div className="flex flex-col mt-6 space-y-4 text-lg font-medium h-full">
           {sheetMenu.map(({ icon, name, url }, i) => (
             <Link
               key={i}
@@ -60,7 +60,9 @@ export default function SheetLinks() {
               {name}
             </Link>
           ))}
-          <ToogleTheme className="justify-between" />
+          <div className="flex flex-col justify-end pb-4 grow">
+            <ToogleTheme className="justify-between" />
+          </div>
         </div>
       </SheetContent>
     </Sheet>
