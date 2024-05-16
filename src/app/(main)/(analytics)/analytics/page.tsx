@@ -10,11 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  getTotalExpenses,
-  getTotalIncome,
-  getTransaction,
+  getBalance,
+  getMonthlyExpenses,
+  getMonthlyIncome,
+  getExpensesByCategory,
 } from "@/lib/dbFunctions/db";
-import { Data } from "@/types/type";
+import { IncomeAndExpense } from "@/types/type";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,13 +28,19 @@ export default async function page() {
 
   if (!user) return null;
 
-  const transactions = await getTransaction(user.id);
-  const expenses = await getTotalExpenses(user.id);
-  const incomes = await getTotalIncome(user.id);
+  const year = new Date();
+  const firstOfYear = new Date(year.getFullYear(), 0, 1);
 
-  // TODO: Clean up this page
+  const balance = await getBalance(user.id, firstOfYear.toLocaleDateString());
 
-  const months = [
+  const monthWiseExpenses = await getMonthlyExpenses(user.id);
+  const monthWiseIncome = await getMonthlyIncome(user.id);
+
+  const expensesByCategory = await getExpensesByCategory(user.id);
+
+  console.log(expensesByCategory);
+
+  const monthOrder = [
     "Jan",
     "Feb",
     "Mar",
@@ -48,130 +55,102 @@ export default async function page() {
     "Dec",
   ];
 
-  const currentYear = new Date().getFullYear();
+  const monthsSet = new Set([
+    ...monthWiseIncome.map((item) => item.month),
+    ...monthWiseExpenses.map((item) => item.month),
+  ]);
+  const combinedArray: IncomeAndExpense[] = [];
 
-  const monthExpense = Array.from({ length: 12 }, (_, index) => ({
-    month: index,
-    name: months[index],
-    amount: 0,
+  monthsSet.forEach((month) => {
+    const incomeItem = monthWiseIncome.find((item) => item.month === month);
+    const expenseItem = monthWiseExpenses.find((item) => item.month === month);
+    const totalIncome = incomeItem ? parseInt(incomeItem.amount!) : 0;
+    const totalExpense = expenseItem ? parseInt(expenseItem.amount!) : 0;
+
+    combinedArray.push({
+      name: month, // You can change this to any desired name
+      income: totalIncome,
+      expense: totalExpense,
+    });
+  });
+
+  combinedArray.sort(
+    (a, b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name)
+  );
+
+  const totalAmount = expensesByCategory.reduce(
+    (acc, item) => acc + parseInt(item.amount!),
+    0
+  );
+
+  console.log("total amount: ", totalAmount);
+
+  const percentages = expensesByCategory.map((item) => ({
+    name: item.category!,
+    amount: parseInt(item.amount!),
+    percentage: parseFloat(
+      ((parseInt(item.amount!) / totalAmount) * 100).toFixed(2)
+    ),
   }));
-  const incomeAndExpense = Array.from({ length: 12 }, (_, index) => ({
-    month: index,
-    name: months[index],
-    expense: 0,
-    income: 0,
-  }));
 
-  incomes.forEach((income) => {
-    const transactionDate = new Date(income.date!); // Create a Date object
-    const month = transactionDate.getMonth(); // Get month as a number (0-11)
-    const year = transactionDate.getFullYear();
-
-    if (year === currentYear) {
-      incomeAndExpense[month].income += income.amount!;
-    }
-  });
-
-  expenses.forEach((expense) => {
-    const transactionDate = new Date(expense.date!); // Create a Date object
-    const month = transactionDate.getMonth(); // Get month as a number (0-11)
-    const year = transactionDate.getFullYear();
-
-    if (year === currentYear) {
-      monthExpense[month].amount += expense.amount!;
-      incomeAndExpense[month].expense += expense.amount!;
-    }
-  });
-
-  const pieChartData = transactions.reduce((acc, transaction) => {
-    const categoryName = transaction.category.name!;
-    const existingCategory = acc.find((item) => item.name === categoryName);
-
-    if (existingCategory) {
-      existingCategory.amount += transaction.transaction.amount!;
-    } else {
-      acc.push({
-        name: categoryName,
-        amount: transaction.transaction.amount!,
-      });
-    }
-
-    return acc;
-  }, [] as Data[]);
-
-  const calculatePercentages = (data: Data[]) => {
-    const totalSpend = data.reduce((acc, item) => acc + item.amount, 0);
-    return data.map((item) => ({
-      ...item,
-      percentage: Math.round((item.amount / totalSpend) * 100),
-    }));
-  };
-
-  const pieChartDataWithPercentages = calculatePercentages(pieChartData);
-
-  let balance = 0;
-
-  incomeAndExpense.forEach((item) => {
-    balance += item.income - item.expense;
-  });
+  console.log(percentages);
 
   return (
-    <div className="flex flex-col p-4 max-w-screen-xl mx-auto">
-      <h3>Analytics</h3>
+    <>
+      <div className="flex flex-col p-4 max-w-screen-xl mx-auto">
+        <h3>Analytics</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4">
-        {/* Balance Card */}
-        <Card className="rounded-lg md:row-span-2">
-          <CardHeader>
-            <CardDescription>Balance for this month</CardDescription>
-            <CardTitle>₹{balance}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6"></CardContent>
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4">
+          {/* Balance Card */}
+          <Card className="rounded-lg md:row-span-2">
+            <CardHeader>
+              <CardDescription>Balance for this year</CardDescription>
+              <CardTitle>₹{balance}</CardTitle>
+            </CardHeader>
+          </Card>
 
-        {/* Income vs Expense Card */}
+          {/* Income vs Expense Card  */}
+          <Card className="rounded-lg md:col-span-2 md:row-span-2">
+            <CardHeader>
+              <CardDescription>Line Chart</CardDescription>
+              <CardTitle>Income vs Expense</CardTitle>
+              <CardContent className="p-6 overflow-x-auto ">
+                <ExpenseLineChart incomeAndExpense={combinedArray} />
+              </CardContent>
+            </CardHeader>
+          </Card>
 
-        <Card className="rounded-lg md:col-span-2 md:row-span-2">
-          <CardHeader>
-            <CardDescription>Line Chart</CardDescription>
-            <CardTitle>Income vs Expense</CardTitle>
-            <CardContent className="p-6 overflow-x-auto ">
-              <ExpenseLineChart incomeAndExpense={incomeAndExpense} />
+          <Card className="rounded-lg md:row-span-2 md:col-start-4">
+            <CardHeader>
+              <CardTitle className="text-muted-foreground">
+                New Chart For Analytics Comming Soon...
+              </CardTitle>
+            </CardHeader>
+          </Card>
+
+          {/* Bar chart */}
+          <Card className="rounded-lg md:col-span-2 md:row-span-2 md:row-start-3">
+            <CardHeader>
+              <CardDescription>Bar Chart</CardDescription>
+              <CardTitle>Monthly Expenses</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 overflow-x-auto">
+              <MontlyExpBarChart monthExpenseData={monthWiseExpenses} />
             </CardContent>
-          </CardHeader>
-        </Card>
+          </Card>
 
-        {/* upcomming chart */}
-        <Card className="rounded-lg md:row-span-2 md:col-start-4">
-          <CardHeader>
-            <CardTitle className="text-muted-foreground">
-              New Chart For Analytics Comming Soon...
-            </CardTitle>
-          </CardHeader>
-        </Card>
-
-        {/* Bar chart */}
-        <Card className="rounded-lg md:col-span-2 md:row-span-2 md:row-start-3">
-          <CardHeader>
-            <CardDescription>Bar Chart</CardDescription>
-            <CardTitle>Monthly Expenses</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 overflow-x-auto">
-            <MontlyExpBarChart monthExpenseData={monthExpense} />
-          </CardContent>
-        </Card>
-
-        {/* spending by category */}
-        <Card className="rounded-lg md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-3">
-          <CardHeader>
-            <CardDescription>Pie Chart</CardDescription>
-            <CardTitle>Spending by Category</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 overflow-x-auto">
-            <CategoryPieChart data={pieChartDataWithPercentages} />
-          </CardContent>
-        </Card>
+          {/* spending by category */}
+          <Card className="rounded-lg md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-3">
+            <CardHeader>
+              <CardDescription>Pie Chart</CardDescription>
+              <CardTitle>Spending by Category</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 overflow-x-auto">
+              <CategoryPieChart data={percentages} />
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

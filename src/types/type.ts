@@ -25,13 +25,11 @@ export interface DataWithPercentage extends Data {
 }
 
 export interface MonthExpenses {
-  name: string;
-  month: number;
-  amount: number;
+  month: string;
+  amount: string | null;
 }
 
 export interface IncomeAndExpense {
-  month: number;
   name: string;
   expense: number;
   income: number;

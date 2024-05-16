@@ -28,8 +28,8 @@
     --accent: 51 19% 92%;
     --accent-foreground: 51 19% 12%;
 
-    --destructive: 21 82% 29%;
-    --destructive-foreground: 21 82% 89%;
+    --destructive: 3 82% 22%;
+    --destructive-foreground: 3 82% 82%;
 
     --ring: 51 100% 50%;
     --radius: 0.5rem;
@@ -60,8 +60,8 @@
     --accent: 51 4% 15%;
     --accent-foreground: 51 4% 75%;
 
-    --destructive: 21 82% 60%;
-    --destructive-foreground: 21 82% 0%;
+    --destructive: 3 82% 47%;
+    --destructive-foreground: 0 0% 100%;
 
     --ring: 51 100% 50%;
   }
@@ -70,6 +70,11 @@
 @layer base {
   * {
     @apply border-border;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   h1 {
     @apply scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-5xl;

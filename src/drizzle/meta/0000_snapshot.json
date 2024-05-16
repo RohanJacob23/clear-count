@@ -1,10 +1,10 @@
 {
-  "id": "0682c533-8230-4e12-909c-f22bd308d6e1",
+  "id": "7cd03589-df03-4e08-9925-195589cce6aa",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "category": {
+    "public.category": {
       "name": "category",
       "schema": "",
       "columns": {
@@ -46,7 +46,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -88,7 +88,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "transaction": {
+    "public.transaction": {
       "name": "transaction",
       "schema": "",
       "columns": {
@@ -114,7 +114,13 @@
           "name": "date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "month": {
+          "name": "month",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "amount": {
           "name": "amount",
@@ -167,7 +173,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {

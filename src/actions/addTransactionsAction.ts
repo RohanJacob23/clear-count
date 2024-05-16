@@ -2,6 +2,8 @@
 
 import { db } from "@/db";
 import { transaction } from "@/db/schema";
+import { getMonthName } from "@/lib/getMonth";
+import { getMonth } from "date-fns";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -32,6 +34,7 @@ export async function addTransactionFormAction(
       user_id: rawFormData.user_id,
       description: rawFormData.description,
       date: rawFormData.transactionDate,
+      month: getMonthName(getMonth(new Date(rawFormData.transactionDate))),
       category_id: rawFormData.category,
       type: rawFormData.type,
       amount: parseInt(rawFormData.amount),
@@ -76,6 +79,7 @@ export async function editTransactionFormAction(
       .set({
         description: rawFormData.description,
         date: rawFormData.transactionDate,
+        month: getMonthName(getMonth(new Date(rawFormData.transactionDate))),
         category_id: rawFormData.category,
         type: rawFormData.type,
         amount: parseInt(rawFormData.amount),

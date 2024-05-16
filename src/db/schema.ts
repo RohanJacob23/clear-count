@@ -33,7 +33,8 @@ export const transaction = pgTable("transaction", {
     .notNull()
     .references(() => user.id),
   category_id: text("category_id").references(() => category.id),
-  date: date("date"),
+  date: date("date").notNull(),
+  month: text("month").notNull(),
   amount: integer("amount"),
   description: text("description"),
   type: text("type", { enum: ["income", "expense"] }),

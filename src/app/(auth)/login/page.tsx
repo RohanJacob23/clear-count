@@ -1,7 +1,6 @@
-import { login, validateRequest } from "@/actions/authActions";
+import { login } from "@/actions/authActions";
 import AuthForm from "@/components/AuthForm";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -9,8 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  const { user } = await validateRequest();
-  if (user) return redirect("/dashboard");
   return (
     <main className="flex items-center justify-center">
       <AuthForm type="login" action={login} />

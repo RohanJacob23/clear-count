@@ -19,10 +19,10 @@ export default async function page() {
           <ExpenseOverviewCard title="Total Expenses" />
         </Suspense>
         <Suspense fallback={<ExpOverviewCardLoading />}>
-          <ExpenseOverviewCard title="This month expenses" currentDate />
+          <ExpenseOverviewCard title="This month expenses" showThisMonth />
         </Suspense>
         <Suspense fallback={<ExpOverviewCardLoading />}>
-          <ExpenseOverviewCard title="Average expenses per month" avg />
+          <ExpenseOverviewCard title="Average expenses per month" showAvg />
         </Suspense>
       </div>
 

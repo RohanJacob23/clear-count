@@ -29,7 +29,7 @@ export default function MontlyExpBarChart({
           bottom: 5,
         }}
       >
-        <XAxis dataKey="name" />
+        <XAxis dataKey="month" />
         <YAxis />
         <Tooltip cursor={false} labelClassName="!text-black" />
         <Bar radius={[4, 4, 0, 0]} dataKey="amount" fill="#FFD700" />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -60,13 +60,12 @@ export default function EditTransactionModal({
     userTransaction.date ? new Date(userTransaction.date) : new Date()
   );
 
-  const [renderToast, setRenderToast] = useState<string | number>();
-
+  const renderToast = useRef<string | number>();
   const router = useRouter();
 
   useEffect(() => {
     if (state?.success) {
-      setRenderToast((prev) => toast.success(state.success, { id: prev }));
+      toast.success(state.success, { id: renderToast.current });
       router.back();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +88,7 @@ export default function EditTransactionModal({
         </DialogHeader>
         <form
           action={async (formData) => {
-            setRenderToast(toast.loading("Loading..."));
+            renderToast.current = toast.loading("Loading...");
             try {
               await formAction(formData);
             } catch (error) {

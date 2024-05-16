@@ -12,7 +12,6 @@ export default async function TransactionTable() {
     ...item.transaction,
     category: item.category.name,
   }));
-  transactions.reverse();
 
   return (
     <DataTable

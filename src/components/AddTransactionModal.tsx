@@ -53,21 +53,22 @@ export default function AddTransactionModal({
   categories: Category[];
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [open, setOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState<Date>(new Date());
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>();
   const [state, formAction] = useFormState(addTransactionFormAction, null);
-  const [renderToast, setRenderToast] = useState<string | number>();
+  const renderToast = useRef<string | number>();
 
   useEffect(() => {
     if (state?.success) {
-      setRenderToast((prev) => toast.success(state.success, { id: prev }));
+      toast.success(state.success, { id: renderToast.current });
     }
   }, [state]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="border border-primary hover:border-border border-dashed bg-background shadow-sm hover:bg-accent hover:text-accent-foreground text-foreground"
@@ -85,15 +86,15 @@ export default function AddTransactionModal({
         <form
           ref={formRef}
           action={async (formData) => {
-            setRenderToast(toast.loading("Adding Transaction..."));
+            renderToast.current = toast.loading("Adding Transaction...");
             try {
               await formAction(formData);
             } catch (error) {
               console.log(error);
             } finally {
               formRef.current?.reset();
-              setDate(undefined);
               setSelectedCategoryId(undefined);
+              setOpen(false);
             }
           }}
           className="flex flex-col space-y-4"
@@ -140,7 +141,7 @@ export default function AddTransactionModal({
                   mode="single"
                   selected={date}
                   onSelect={(date) => {
-                    setDate(date);
+                    if (date) setDate(date);
                     setOpenDate(false);
                   }}
                   disabled={(date) => date < new Date("1900-01-01")}
@@ -242,7 +243,7 @@ export default function AddTransactionModal({
           {/* amount input */}
           <div className="grid items-center gap-1.5">
             <Label htmlFor="amount">Amount</Label>
-            <Input type="text" name="amount" required autoComplete="off" />
+            <Input type="number" name="amount" required autoComplete="off" />
           </div>
           <SubmitButton text="Add" />
         </form>
