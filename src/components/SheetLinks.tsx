@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
+import ToogleTheme from "./ToogleTheme";
 
 export default function SheetLinks() {
   const sheetMenu = [
@@ -59,6 +60,7 @@ export default function SheetLinks() {
               {name}
             </Link>
           ))}
+          <ToogleTheme className="justify-between" />
         </div>
       </SheetContent>
     </Sheet>

@@ -267,7 +267,6 @@ export default function EditTransactionModal({
     return (
       <Drawer
         shouldScaleBackground
-        setBackgroundColorOnScale
         open={open}
         onOpenChange={(op) => {
           if (!op) {

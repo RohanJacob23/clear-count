@@ -270,12 +270,7 @@ export default function AddTransactionModal({
     );
   } else {
     return (
-      <Drawer
-        shouldScaleBackground
-        setBackgroundColorOnScale
-        open={open}
-        onOpenChange={setOpen}
-      >
+      <Drawer shouldScaleBackground open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
           <Button
             className="border border-primary hover:border-border border-dashed bg-background shadow-sm hover:bg-accent hover:text-accent-foreground text-foreground"

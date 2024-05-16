@@ -8,7 +8,9 @@ import { useTheme } from "next-themes";
 
 export default function ToogleTheme({
   isCollapsed,
+  className,
 }: {
+  className?: string;
   isCollapsed?: boolean;
 }) {
   const { theme, setTheme } = useTheme();
@@ -16,7 +18,7 @@ export default function ToogleTheme({
     <Button
       variant="outline"
       size={isCollapsed ? "icon" : "default"}
-      className="gap-2 w-full"
+      className={cn("gap-2 w-full", className)}
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
       <span className={cn(isCollapsed && "sr-only", "dark:hidden")}>Light</span>
