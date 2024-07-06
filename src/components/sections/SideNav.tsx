@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Separator } from "../ui/separator";
 import {
   Tooltip,
   TooltipContent,
@@ -18,7 +17,7 @@ import {
 import ToogleTheme from "../ToogleTheme";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export default function SideNav() {
@@ -43,38 +42,21 @@ export default function SideNav() {
   ];
 
   return (
-    <>
-      <motion.div
-        initial={{ width: "3.5rem" }}
-        animate={openSideNav ? { width: "15rem" } : { width: "3.5rem" }}
-        className="hidden md:flex flex-col border-r overflow-hidden"
+    <MotionConfig transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}>
+      <motion.section
+        initial={{ width: "52px" }}
+        animate={{ width: openSideNav ? "224px" : "52px" }}
+        className="hidden md:flex flex-col overflow-hidden divide-y border-r"
       >
-        <TooltipProvider delayDuration={100}>
-          <div className="p-2 self-end">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="rounded-full"
-              onClick={() => setOpenSideNav((prev) => !prev)}
-            >
-              <motion.span
-                initial={false}
-                animate={openSideNav ? { rotate: 180 } : { rotate: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <ArrowRightIcon className="size-4 min-w-4" />
-              </motion.span>
-            </Button>
-          </div>
+        <ArrowButton open={openSideNav} setOpen={setOpenSideNav} />
 
-          <Separator />
-          <div className="flex flex-col gap-1 p-2">
+        <div className="flex flex-col gap-1 p-2">
+          <TooltipProvider delayDuration={100}>
             {sideNavButton.map(({ icon, name, url }, i) => (
               <Tooltip key={i}>
                 <TooltipTrigger asChild>
                   <Link href={url}>
-                    <motion.div
-                      layout
+                    <button
                       className={cn(
                         buttonVariants({
                           variant:
@@ -83,50 +65,74 @@ export default function SideNav() {
                               : "ghost",
                         }),
                         openSideNav ? "justify-start" : "justify-center",
-                        "w-full space-x-2 overflow-x-hidden"
+                        "flex gap-2 p-2 w-full overflow-hidden"
                       )}
                     >
-                      <motion.span
-                        layout
-                        transition={{
-                          layout: { duration: 0.25 },
-                        }}
-                      >
+                      <motion.span layout className="inline-block">
                         {icon}
                       </motion.span>
-                      <AnimatePresence>
+                      <AnimatePresence mode="popLayout">
                         {openSideNav && (
                           <motion.span
-                            layout
-                            key={name}
-                            animate={{ width: "fit-content" }}
-                            exit={{ width: "0px" }}
-                            transition={{
-                              duration: 0.2,
+                            initial={{
+                              y: "100%",
+                              opacity: 0,
+                              filter: "blur(8px)",
                             }}
-                            className="inline-block ml-2 w-0 overflow-hidden"
+                            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                            exit={{
+                              y: "-100%",
+                              opacity: 0,
+                              filter: "blur(8px)",
+                            }}
+                            className="inline-block"
                           >
                             {name}
                           </motion.span>
                         )}
                       </AnimatePresence>
-                    </motion.div>
+                    </button>
                   </Link>
-                  {/* </Button> */}
                 </TooltipTrigger>
+                {/* tooltip content */}
                 {!openSideNav && (
                   <TooltipContent side="left">{name}</TooltipContent>
                 )}
               </Tooltip>
             ))}
-          </div>
+          </TooltipProvider>
+        </div>
 
-          <Separator />
-          <div className="flex flex-col justify-end flex-1 px-2 py-4">
-            <ToogleTheme isCollapsed />
-          </div>
-        </TooltipProvider>
-      </motion.div>
-    </>
+        <div className="flex items-end h-full p-2">
+          <ToogleTheme isCollapsed={!openSideNav} />
+        </div>
+      </motion.section>
+    </MotionConfig>
   );
 }
+
+const ArrowButton = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  return (
+    <motion.div layout className="p-2 self-end">
+      <Button
+        size="icon"
+        variant="ghost"
+        className="rounded-full"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <motion.span
+          initial={false}
+          animate={open ? { rotate: 180 } : { rotate: 0 }}
+        >
+          <ArrowRightIcon className="size-4 min-w-4" />
+        </motion.span>
+      </Button>
+    </motion.div>
+  );
+};
