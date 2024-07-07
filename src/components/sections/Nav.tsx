@@ -24,7 +24,11 @@ export default async function Nav() {
       {/* user profile */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative size-10 rounded-full">
+          <Button
+            id="test"
+            variant="ghost"
+            className="relative size-10 rounded-full"
+          >
             <Avatar className="size-10">
               <AvatarImage src={user.profile} />
               <AvatarFallback>{user.name[0].toUpperCase()}</AvatarFallback>
