@@ -37,16 +37,16 @@ export default function SheetLinks() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const test = document.getElementById("test");
+    const avatar = document.getElementById("avatar");
     const section = document.getElementById("section");
     animate(
-      test!,
-      { scale: openSheet ? 0.95 : 1 },
+      avatar!,
+      { transform: openSheet ? "scale(0.95)" : "scale(1)" },
       { type: "spring", bounce: 0, duration: 0.35 }
     );
     animate(
       section!,
-      { scale: openSheet ? 0.95 : 1 },
+      { transform: openSheet ? "scale(0.95)" : "scale(1)" },
       { type: "spring", bounce: 0, duration: 0.35 }
     );
   }, [openSheet]);
@@ -66,10 +66,10 @@ export default function SheetLinks() {
         <AnimatePresence>
           {openSheet && (
             <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              className="block md:hidden fixed inset-0 w-3/4 h-screen p-2 z-50"
+              initial={{ transform: "translateX(-100%)" }}
+              animate={{ transform: "translateX(0%)" }}
+              exit={{ transform: "translateX(-100%)" }}
+              className="block md:hidden fixed inset-0 w-3/4 h-screen p-2 z-[60]"
             >
               <div className="flex flex-col p-2 bg-background rounded-lg size-full">
                 <Button
@@ -104,7 +104,9 @@ export default function SheetLinks() {
               </div>
             </motion.div>
           )}
+        </AnimatePresence>
 
+        <AnimatePresence>
           {/* overlay */}
           {openSheet && (
             <motion.div
@@ -112,7 +114,7 @@ export default function SheetLinks() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpenSheet(false)}
-              className="block md:hidden fixed bg-black/75 inset-0 w-screen h-screen z-[45]"
+              className="block md:hidden fixed bg-black/75 dark:bg-zinc-900/75 inset-0 w-screen h-screen z-[45]"
             />
           )}
         </AnimatePresence>
@@ -120,34 +122,3 @@ export default function SheetLinks() {
     </MotionConfig>
   );
 }
-
-// <Sheet open={openSheet} onOpenChange={setOpenSheet}>
-//   <SheetTrigger asChild>
-//     <Button size="icon" variant="ghost" className="md:hidden rounded-full">
-//       <HamburgerMenuIcon className="size-4" />
-//     </Button>
-//   </SheetTrigger>
-
-//   {/* sheet content */}
-//   <SheetContent side="left">
-//     <div className="flex flex-col mt-6 space-y-4 text-lg font-medium h-full">
-//       {sheetMenu.map(({ icon, name, url }, i) => (
-//         <Link
-//           key={i}
-//           href={url}
-//           onClick={() => setOpenSheet(false)}
-//           className={cn(
-//             "flex items-center px-2.5 text-muted-foreground hover:text-foreground",
-//             pathname === url && "text-foreground"
-//           )}
-//         >
-//           {icon}
-//           {name}
-//         </Link>
-//       ))}
-//       <div className="flex flex-col justify-end pb-4 grow">
-//         <ToogleTheme className="justify-between" />
-//       </div>
-//     </div>
-//   </SheetContent>
-// </Sheet>

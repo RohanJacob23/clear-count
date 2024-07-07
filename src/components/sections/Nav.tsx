@@ -25,7 +25,7 @@ export default async function Nav() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            id="test"
+            id="avatar"
             variant="ghost"
             className="relative size-10 rounded-full"
           >

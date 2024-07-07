@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import { Card, CardContent } from "./ui/card";
-import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import { AnimatePresence, m, MotionConfig } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 
 export default function FeatureCard({
   icon,
@@ -18,13 +17,12 @@ export default function FeatureCard({
   gridStyling: string;
 }) {
   const [showSlider, setShowSlider] = useState(false);
-  const { theme } = useTheme();
   return (
     <MotionConfig transition={{ type: "spring", bounce: 0, duration: 0.5 }}>
-      <motion.li
+      <m.li
         variants={{
-          hidden: { opacity: 0, x: 20, filter: "blur(8px)" },
-          visible: { opacity: 1, x: 0, filter: "blur(0px)" },
+          hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
         }}
         onHoverStart={() => setShowSlider(true)}
         onHoverEnd={() => setShowSlider(false)}
@@ -33,10 +31,10 @@ export default function FeatureCard({
         <Card className="size-full rounded-lg relative overflow-hidden">
           <AnimatePresence>
             {showSlider && (
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
+              <m.div
+                initial={{ transform: "translateX(-100%)" }}
+                animate={{ transform: "translateX(0%)" }}
+                exit={{ transform: "translateX(-100%)" }}
                 className="absolute size-full z-20 bg-primary rounded-lg"
               />
             )}
@@ -55,7 +53,7 @@ export default function FeatureCard({
             </div>
           </CardContent>
         </Card>
-      </motion.li>
+      </m.li>
     </MotionConfig>
   );
 }
