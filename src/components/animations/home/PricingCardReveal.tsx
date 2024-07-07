@@ -12,10 +12,10 @@ export default function PricingCardReveal({
 }) {
   return (
     <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      whileInView={{ x: 0, opacity: 1 }}
+      initial={{ x: -20, opacity: 0, filter: "blur(8px)" }}
+      whileInView={{ x: 0, opacity: 1, filter: "blur(0px)" }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ type: "spring", bounce: 0, duration: 0.75, delay }}
     >
       {children}
     </motion.div>

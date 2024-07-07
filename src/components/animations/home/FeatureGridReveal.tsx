@@ -2,9 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import FeatureCard from "@/components/FeatureCard";
-import { cn } from "@/lib/utils";
 
 export default function FeatureGridReveal({
   features,
@@ -29,6 +27,7 @@ export default function FeatureGridReveal({
             opacity: 1,
             y: 0,
             transition: {
+              duration: 1,
               when: "beforeChildren",
               staggerChildren: 0.2,
             },
@@ -36,7 +35,7 @@ export default function FeatureGridReveal({
         }}
       >
         {features.map((item, idx) => (
-          <FeatureCard key={idx} index={idx} {...item} />
+          <FeatureCard key={idx} {...item} />
         ))}
       </motion.ul>
     </div>

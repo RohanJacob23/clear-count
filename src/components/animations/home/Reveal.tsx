@@ -17,20 +17,27 @@ export default function Reveal({
       whileInView="visible"
       viewport={{ once: true }}
       variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, when: "beforeChildren", delay: delay },
-        },
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{
+        type: "spring",
+        bounce: 0,
+        duration: 1,
+        when: "beforeChildren",
+        delay,
       }}
     >
       {children}
       <motion.div
-        variants={{ hidden: { left: 0 }, visible: { left: "100%" } }}
-        transition={{ duration: 0.5 }}
+        variants={{ hidden: { x: "0%" }, visible: { x: "100%" } }}
+        transition={{
+          type: "spring",
+          bounce: 0,
+          duration: 1,
+        }}
         className="absolute inset-0 w-full h-full bg-primary"
-      ></motion.div>
+      />
     </motion.div>
   );
 }

@@ -23,7 +23,7 @@ export default function Pricing() {
       name: "Startup",
       desc: "This pricing plan is being worked on as for now",
       price: "--",
-      isMostPop: false,
+      isMostPop: true,
       features: ["Comming Soon...", "Comming Soon...", "Comming Soon..."],
     },
     {

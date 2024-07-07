@@ -31,7 +31,7 @@ export default function Hero() {
         </Reveal>
       </div>
       <div className="relative z-50">
-        <RevealButton>
+        <RevealButton delay={0.8}>
           <Button asChild className="w-full">
             <Link href="/dashboard">Get started</Link>
           </Button>
