@@ -34,7 +34,7 @@ export default function FeatureCard({
               <m.div
                 initial={{ transform: "translateX(-100%)" }}
                 animate={{ transform: "translateX(0%)" }}
-                exit={{ transform: "translateX(-100%)" }}
+                exit={{ transform: "translateX(100%)" }}
                 className="absolute size-full z-20 bg-primary rounded-lg"
               />
             )}

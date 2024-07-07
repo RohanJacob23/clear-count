@@ -69,7 +69,7 @@ export default function SheetLinks() {
               initial={{ transform: "translateX(-100%)" }}
               animate={{ transform: "translateX(0%)" }}
               exit={{ transform: "translateX(-100%)" }}
-              className="block md:hidden fixed inset-0 w-3/4 h-screen p-2 z-[60]"
+              className="block md:hidden fixed inset-0 w-3/4 h-[100dvh] p-2 z-[60]"
             >
               <div className="flex flex-col p-2 bg-background rounded-lg size-full">
                 <Button

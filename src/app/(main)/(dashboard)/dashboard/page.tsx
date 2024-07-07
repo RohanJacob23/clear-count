@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function page() {
   return (
-    <section id="section">
+    <section id="section" className="scale-100">
       {/* expenses */}
       <div className="flex flex-wrap gap-4 p-4 max-w-screen-xl mx-auto">
         <Suspense fallback={<ExpOverviewCardLoading />}>
