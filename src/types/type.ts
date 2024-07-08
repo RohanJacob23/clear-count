@@ -30,7 +30,7 @@ export interface DataWithPercentage extends Data {
 
 export interface MonthExpenses {
   month: string;
-  amount: string | null;
+  amount: number;
 }
 
 export interface IncomeAndExpense {

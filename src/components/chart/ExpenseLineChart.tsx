@@ -1,17 +1,26 @@
 "use client";
 
 import { IncomeAndExpense } from "@/types/type";
-import React from "react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "../ui/chart";
+
+const chartConfig = {
+  income: {
+    label: "income",
+    color: "hsl(var(--chart-1))",
+  },
+  expense: {
+    label: "expense",
+    color: "hsl(var(--chart-3))",
+  },
+} satisfies ChartConfig;
 
 export default function ExpenseLineChart({
   incomeAndExpense,
@@ -19,19 +28,21 @@ export default function ExpenseLineChart({
   incomeAndExpense: IncomeAndExpense[];
 }) {
   return (
-    <ResponsiveContainer className="!min-w-96 !h-56 !w-full">
-      <LineChart
-        data={incomeAndExpense}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip labelClassName="!text-black" />
-        <Legend />
-        <Line type="monotone" dataKey="income" stroke="#FFD700" />
-        <Line type="monotone" dataKey="expense" stroke="#E84855" />
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <LineChart accessibilityLayer data={incomeAndExpense}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="name"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+        />
+        <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
+        <ChartLegend content={<ChartLegendContent />} />
+
+        <Line type="monotone" dataKey="income" stroke="var(--color-income)" />
+        <Line type="monotone" dataKey="expense" stroke="var(--color-expense)" />
       </LineChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }

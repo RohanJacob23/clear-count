@@ -1,15 +1,22 @@
 "use client";
 
 import { MonthExpenses } from "@/types/type";
-import React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "../ui/chart";
+
+const chartConfig = {
+  amount: {
+    label: "amount",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
 
 export default function MontlyExpBarChart({
   monthExpenseData,
@@ -17,23 +24,25 @@ export default function MontlyExpBarChart({
   monthExpenseData: MonthExpenses[];
 }) {
   return (
-    <ResponsiveContainer className="!min-w-96 !h-56 !w-full">
-      <BarChart
-        width={500}
-        height={300}
-        data={monthExpenseData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <XAxis dataKey="month" />
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <BarChart accessibilityLayer data={monthExpenseData}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+        />
         <YAxis />
-        <Tooltip cursor={false} labelClassName="!text-black" />
-        <Bar radius={[4, 4, 0, 0]} dataKey="amount" fill="#FFD700" />
+        <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
+        <ChartLegend content={<ChartLegendContent />} />
+
+        <Bar
+          dataKey="amount"
+          fill="var(--color-amount)"
+          radius={[5, 5, 0, 0]}
+        />
       </BarChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }

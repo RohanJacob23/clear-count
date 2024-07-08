@@ -16,6 +16,7 @@ import {
   getExpensesByCategory,
 } from "@/lib/dbFunctions/db";
 import { IncomeAndExpense } from "@/types/type";
+import exp from "constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,10 +34,15 @@ export default async function page() {
 
   const balance = await getBalance(user.id, firstOfYear.toLocaleDateString());
 
-  const monthWiseExpenses = await getMonthlyExpenses(user.id);
-  const monthWiseIncome = await getMonthlyIncome(user.id);
+  const fetchMonthWiseExpenses = await getMonthlyExpenses(user.id);
+  const fetchMonthWiseIncome = await getMonthlyIncome(user.id);
 
   const expensesByCategory = await getExpensesByCategory(user.id);
+
+  const monthWiseExpenses = fetchMonthWiseExpenses.map((item) => ({
+    ...item,
+    amount: parseInt(item.amount!),
+  }));
 
   const monthOrder = [
     "Jan",
@@ -54,23 +60,30 @@ export default async function page() {
   ];
 
   const monthsSet = new Set([
-    ...monthWiseIncome.map((item) => item.month),
-    ...monthWiseExpenses.map((item) => item.month),
+    ...fetchMonthWiseIncome.map((item) => item.month),
+    ...fetchMonthWiseExpenses.map((item) => item.month),
   ]);
   const combinedArray: IncomeAndExpense[] = [];
 
   monthsSet.forEach((month) => {
-    const incomeItem = monthWiseIncome.find((item) => item.month === month);
-    const expenseItem = monthWiseExpenses.find((item) => item.month === month);
+    const incomeItem = fetchMonthWiseIncome.find(
+      (item) => item.month === month
+    );
+    const expenseItem = fetchMonthWiseExpenses.find(
+      (item) => item.month === month
+    );
     const totalIncome = incomeItem ? parseInt(incomeItem.amount!) : 0;
     const totalExpense = expenseItem ? parseInt(expenseItem.amount!) : 0;
-
     combinedArray.push({
       name: month, // You can change this to any desired name
       income: totalIncome,
       expense: totalExpense,
     });
   });
+
+  monthWiseExpenses.sort(
+    (a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
+  );
 
   combinedArray.sort(
     (a, b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name)
@@ -81,19 +94,27 @@ export default async function page() {
     0
   );
 
-  const percentages = expensesByCategory.map((item) => ({
+  const COLORS = [
+    "hsl(var(--chart-1))",
+    "hsl(var(--chart-2))",
+    "hsl(var(--chart-3))",
+    "hsl(var(--chart-4))",
+  ];
+
+  const percentages = expensesByCategory.map((item, i) => ({
     name: item.category!,
     amount: parseInt(item.amount!),
     percentage: parseFloat(
       ((parseInt(item.amount!) / totalAmount) * 100).toFixed(2)
     ),
+    fill: COLORS[i % COLORS.length],
   }));
 
   return (
     <>
       <section
         id="section"
-        className="flex flex-col p-4 max-w-screen-xl mx-auto"
+        className="flex flex-col p-4 max-w-screen-xl mx-auto scale-100"
       >
         <h3>Analytics</h3>
 
