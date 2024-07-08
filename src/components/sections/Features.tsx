@@ -64,12 +64,7 @@ export default function Features() {
               </p>
             </Reveal>
           </div>
-          <div
-            className="absolute inset-0 max-w-xs mx-auto h-44 blur-[118px]"
-            style={{
-              background: "#ffd90040",
-            }}
-          ></div>
+          <div className="absolute inset-0 max-w-xs mx-auto h-44 blur-[118px] bg-primary/40" />
         </div>
         <FeatureGridReveal features={features} />
       </div>
