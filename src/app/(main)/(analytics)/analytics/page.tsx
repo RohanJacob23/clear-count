@@ -91,7 +91,10 @@ export default async function page() {
 
   return (
     <>
-      <div className="flex flex-col p-4 max-w-screen-xl mx-auto">
+      <section
+        id="section"
+        className="flex flex-col p-4 max-w-screen-xl mx-auto"
+      >
         <h3>Analytics</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4">
@@ -144,7 +147,7 @@ export default async function page() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </section>
     </>
   );
 }
