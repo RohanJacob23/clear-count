@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${exo.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Toaster position="top-center" richColors closeButton />

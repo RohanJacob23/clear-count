@@ -27,7 +27,7 @@ export default async function Nav() {
           <Button
             id="avatar"
             variant="ghost"
-            className="relative size-10 rounded-full"
+            className="relative size-10 rounded-full scale-100"
           >
             <Avatar className="size-10">
               <AvatarImage src={user.profile} />

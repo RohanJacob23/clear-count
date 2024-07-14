@@ -52,7 +52,7 @@ export default function SheetLinks() {
   }, [openSheet]);
 
   return (
-    <MotionConfig transition={{ type: "spring", bounce: 0.25, duration: 0.65 }}>
+    <MotionConfig transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}>
       <section>
         <Button
           size="icon"
@@ -66,9 +66,21 @@ export default function SheetLinks() {
         <AnimatePresence>
           {openSheet && (
             <motion.div
-              initial={{ transform: "translateX(-100%)" }}
-              animate={{ transform: "translateX(0%)" }}
-              exit={{ transform: "translateX(-100%)" }}
+              initial={{
+                transform: "translateX(-100%)",
+                filter: "blur(8px)",
+                opacity: 0,
+              }}
+              animate={{
+                transform: "translateX(0%)",
+                filter: "blur(0px)",
+                opacity: 1,
+              }}
+              exit={{
+                transform: "translateX(-100%)",
+                filter: "blur(8px)",
+                opacity: 0,
+              }}
               className="block md:hidden fixed inset-0 w-3/4 h-[100dvh] p-2 z-[60]"
             >
               <div className="flex flex-col p-2 bg-background rounded-lg size-full">
