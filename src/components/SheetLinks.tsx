@@ -36,20 +36,20 @@ export default function SheetLinks() {
   const [openSheet, setOpenSheet] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const avatar = document.getElementById("avatar");
-    const section = document.getElementById("section");
-    animate(
-      avatar!,
-      { transform: openSheet ? "scale(0.95)" : "scale(1)" },
-      { type: "spring", bounce: 0, duration: 0.35 }
-    );
-    animate(
-      section!,
-      { transform: openSheet ? "scale(0.95)" : "scale(1)" },
-      { type: "spring", bounce: 0, duration: 0.35 }
-    );
-  }, [openSheet]);
+  // useEffect(() => {
+  //   const avatar = document.getElementById("avatar");
+  //   const section = document.getElementById("section");
+  //   animate(
+  //     avatar!,
+  //     { transform: openSheet ? "scale(0.95)" : "scale(1)" },
+  //     { type: "spring", bounce: 0, duration: 0.35 }
+  //   );
+  //   animate(
+  //     section!,
+  //     { transform: openSheet ? "scale(0.95)" : "scale(1)" },
+  //     { type: "spring", bounce: 0, duration: 0.35 }
+  //   );
+  // }, [openSheet]);
 
   return (
     <MotionConfig transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}>
@@ -68,17 +68,14 @@ export default function SheetLinks() {
             <motion.div
               initial={{
                 transform: "translateX(-100%)",
-                filter: "blur(8px)",
                 opacity: 0,
               }}
               animate={{
                 transform: "translateX(0%)",
-                filter: "blur(0px)",
                 opacity: 1,
               }}
               exit={{
                 transform: "translateX(-100%)",
-                filter: "blur(8px)",
                 opacity: 0,
               }}
               className="block md:hidden fixed inset-0 w-3/4 h-[100dvh] p-2 z-[60]"
