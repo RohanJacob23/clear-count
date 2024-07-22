@@ -90,7 +90,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    @apply bg-background text-foreground min-h-screen;
+    @apply bg-background text-foreground min-h-screen will-change-transform;
   }
   main {
     @apply font-poppins min-h-screen;
