@@ -48,7 +48,7 @@ export default function Pricing() {
 
       <div className="mt-16 justify-center gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((item, idx) => (
-          <PricingCardReveal key={idx} delay={idx * 0.2}>
+          <PricingCardReveal key={idx} delay={idx * 0.15}>
             <Card className="rounded-lg relative">
               {item.isMostPop ? (
                 <p className="w-32 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border shadow-md bg-muted text-center text-muted-foreground font-semibold text-sm">

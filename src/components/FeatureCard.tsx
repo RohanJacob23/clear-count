@@ -20,10 +20,17 @@ export default function FeatureCard({
   return (
     <MotionConfig transition={{ type: "spring", bounce: 0, duration: 0.5 }}>
       <m.li
+        initial="hidden"
+        whileInView="visible"
         variants={{
-          hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
-          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+          hidden: { opacity: 0, y: 50, filter: "blur(8px)" },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+          },
         }}
+        viewport={{ once: true, amount: 0.75 }}
         onHoverStart={() => setShowSlider(true)}
         onHoverEnd={() => setShowSlider(false)}
         className={cn(gridStyling)}
